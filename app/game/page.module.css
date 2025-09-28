@@ -1,0 +1,452 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #87CEEB 0%, #4682B4 50%, #191970 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+.gameArea {
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #FFD700;
+  text-shadow: 3px 3px 0px #8B4513, 6px 6px 0px #654321;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.instructions {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px;
+  border: 3px solid #FFD700;
+}
+
+.instructions p {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+.scoring {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.scoring p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.startButton {
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  border: 3px solid #8B4513;
+  color: #8B4513;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 20px auto;
+  display: block;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 0px white;
+}
+
+.startButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+}
+
+.welcome {
+  text-align: center;
+  color: #FFD700;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  text-shadow: 2px 2px 0px #8B4513;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 0px black;
+}
+
+.score {
+  color: #FFD700;
+}
+
+.time {
+  color: #FF6B6B;
+}
+
+.ocean {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(180deg, #87CEEB 0%, #4682B4 20%, #2E4A6B 40%, #1A2A4A 60%, #0F1B2E 80%, #000000 100%);
+  overflow: hidden;
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, #87CEEB 0%, #4682B4 100%);
+  z-index: 1;
+}
+
+.water {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #4682B4 0%, #2E4A6B 20%, #1A2A4A 40%, #0F1B2E 60%, #000000 100%);
+  z-index: 2;
+}
+
+.water::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(0, 0, 0, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 40% 95%, rgba(0, 0, 0, 0.5) 0%, transparent 30%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.water::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 10% 85%, rgba(255, 0, 0, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 90% 88%, rgba(255, 0, 0, 0.08) 0%, transparent 15%),
+    radial-gradient(circle at 50% 92%, rgba(255, 0, 0, 0.12) 0%, transparent 25%);
+  pointer-events: none;
+  z-index: 2;
+  animation: deepGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes deepGlow {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.7; }
+}
+
+.shipContainer {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: float 3s ease-in-out infinite;
+}
+
+.ship {
+  font-size: 4rem;
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.4));
+  position: relative;
+}
+
+.pirateFlag {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  z-index: 11;
+  animation: flagWave 2s ease-in-out infinite;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.captain {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  z-index: 12;
+  animation: float 2.5s ease-in-out infinite reverse;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+
+
+.hook {
+  position: absolute;
+  font-size: 1.5rem;
+  z-index: 15;
+  transition: all 0.1s ease;
+  transform-origin: center bottom;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  left: 50%;
+}
+
+.fishingLineContainer {
+  position: absolute;
+  z-index: 14;
+  transform-origin: top center;
+}
+
+.fishingLine {
+  position: absolute;
+  width: 4px;
+  background: linear-gradient(to bottom, #8B4513, #654321);
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fishingRod {
+  position: absolute;
+  font-size: 1.2rem;
+  z-index: 13;
+  transform-origin: center bottom;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+/* Hook animations are now handled by JavaScript for smooth movement */
+
+.fish {
+  position: absolute;
+  font-size: 2rem;
+  z-index: 5;
+  animation: swim 4s ease-in-out infinite;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.fish[data-direction="1"] {
+  animation: swimRight 4s ease-in-out infinite;
+}
+
+.fish[data-direction="-1"] {
+  animation: swimLeft 4s ease-in-out infinite;
+}
+
+.fish[data-type="monster"] {
+  font-size: 2.5rem;
+  z-index: 6;
+  filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.5)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+  animation: swim 6s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
+}
+
+.fish[data-type="shark"] {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+}
+
+.fish[data-type="swordfish"] {
+  font-size: 2.1rem;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+}
+
+.fish[data-type="dolphin"] {
+  font-size: 2rem;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+}
+
+.caughtFish {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  text-align: center;
+  animation: caught 1s ease-out;
+}
+
+.caughtFishEmoji {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.caughtFishEmoji[data-direction="1"] {
+  transform: scaleX(1);
+}
+
+.caughtFishEmoji[data-direction="-1"] {
+  transform: scaleX(-1);
+}
+
+.caughtFishPoints {
+  font-size: 2rem;
+  color: #FFD700;
+  font-weight: bold;
+  text-shadow: 2px 2px 0px black;
+}
+
+.controls {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.gameOver {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 40px;
+  border-radius: 20px;
+  margin: 20px;
+  border: 3px solid #FFD700;
+}
+
+.finalScore {
+  font-size: 2rem;
+  color: #FFD700;
+  margin: 20px 0;
+  text-shadow: 2px 2px 0px black;
+}
+
+.result {
+  font-size: 1.5rem;
+  margin: 20px 0;
+  text-shadow: 2px 2px 0px black;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes flagWave {
+  0%, 100% { transform: translateX(-50%) rotate(-5deg); }
+  50% { transform: translateX(-50%) rotate(5deg); }
+}
+
+@keyframes swim {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  25% { transform: translateY(-2px) scale(1.02); }
+  50% { transform: translateY(-3px) scale(1.05); }
+  75% { transform: translateY(-2px) scale(1.02); }
+}
+
+@keyframes swimRight {
+  0%, 100% { transform: scaleX(1) translateY(0px) scale(1); }
+  25% { transform: scaleX(1) translateY(-2px) scale(1.02); }
+  50% { transform: scaleX(1) translateY(-3px) scale(1.05); }
+  75% { transform: scaleX(1) translateY(-2px) scale(1.02); }
+}
+
+@keyframes swimLeft {
+  0%, 100% { transform: scaleX(-1) translateY(0px) scale(1); }
+  25% { transform: scaleX(-1) translateY(-2px) scale(1.02); }
+  50% { transform: scaleX(-1) translateY(-3px) scale(1.05); }
+  75% { transform: scaleX(-1) translateY(-2px) scale(1.02); }
+}
+
+@keyframes cast {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(10deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes reel {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+@keyframes caught {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+@keyframes oscillate {
+  0% { transform: rotate(-30deg); }
+  50% { transform: rotate(30deg); }
+  100% { transform: rotate(-30deg); }
+}
+
+@keyframes lineExtend {
+  0% { height: 0%; }
+  100% { height: 60%; }
+}
+
+@keyframes lineRetract {
+  0% { height: 60%; }
+  100% { height: 0%; }
+}
+
+@keyframes glow {
+  0% { 
+    filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.5)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+  }
+  100% { 
+    filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.8)) drop-shadow(0 0 6px rgba(0, 0, 0, 0.9));
+  }
+}
+
+/* Fishing line animations are now handled by JavaScript for smooth movement */
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .instructions {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .scoring {
+    grid-template-columns: 1fr;
+  }
+  
+  .hud {
+    font-size: 1.2rem;
+    padding: 15px;
+  }
+  
+  .ship, .captain, .pirateFlag {
+    font-size: 2rem;
+  }
+  
+  .fish {
+    font-size: 1.5rem;
+  }
+}
+
