@@ -304,9 +304,8 @@
 /* Pause Button */
 .pauseButton {
   position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 65px;
+  right: 10px;
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid #FFD700;
   border-radius: 8px;
@@ -316,16 +315,20 @@
   transition: all 0.2s;
   z-index: 20;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
 }
 
 .pauseButton:hover {
-  transform: translateX(-50%) scale(1.1);
+  transform: scale(1.05);
   background: rgba(0, 0, 0, 0.85);
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .pauseButton:active {
-  transform: translateX(-50%) scale(0.95);
+  transform: scale(0.95);
 }
 
 /* Pause Overlay */
