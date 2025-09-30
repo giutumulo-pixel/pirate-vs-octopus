@@ -8,18 +8,17 @@ import { Ocean } from "./components/Ocean";
 import { SoundToggle } from "./components/SoundToggle";
 import { PauseOverlay } from "./components/PauseOverlay";
 import { useSoundManager } from "./hooks/useSound";
-import { playSound, SOUNDS } from "./lib/sounds";
 
 export default function Game() {
   const engine = useGameEngine();
   const { isMuted, masterVolume, toggleMute, changeVolume } = useSoundManager();
 
-  // Helper to play sounds respecting mute and volume
-  const playSoundEffect = useCallback((sound: string) => {
-    if (!isMuted && masterVolume > 0) {
-      playSound(sound, masterVolume);
-    }
-  }, [isMuted, masterVolume]);
+  // Sound system ready for future integration
+  // const playSoundEffect = useCallback((sound: string) => {
+  //   if (!isMuted && masterVolume > 0) {
+  //     playSound(sound, masterVolume);
+  //   }
+  // }, [isMuted, masterVolume]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

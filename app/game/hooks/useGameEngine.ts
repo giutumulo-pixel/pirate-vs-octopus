@@ -132,7 +132,7 @@ export function useGameEngine() {
       });
     }, 16);
     return () => clearInterval(id);
-  }, [started, over, hook]);
+  }, [started, over, hook, paused]);
 
   // Bonus spawn timer - spawn anchor on second lane
   useEffect(() => {
@@ -171,7 +171,7 @@ export function useGameEngine() {
       });
     }, 10000);
     return () => clearInterval(id);
-  }, [started, over, lanes]);
+  }, [started, over, lanes, bonus.spawn, bonus.active]);
 
   // Main loop
   const loop = useCallback((ts: number) => {
@@ -309,7 +309,6 @@ export function useGameEngine() {
         : hookNow.isCasting; // Normal: only during descent
       
       const updated: FishSprite[] = [];
-      let normalHookHasCaught = false; // Track if normal hook already caught a fish
       
       // Check collision with anchor bonus
       if (bonusSpawnRef.current && !bonusSpawnRef.current.isCaught) {
@@ -444,7 +443,7 @@ export function useGameEngine() {
     });
 
     rafRef.current = requestAnimationFrame(loop);
-  }, [started, over, lanes]);
+  }, [started, over, paused, lanes]);
 
   useEffect(() => {
     if (!started || over || paused) return;

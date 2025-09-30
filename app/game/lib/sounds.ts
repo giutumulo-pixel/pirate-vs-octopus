@@ -22,6 +22,7 @@ export function generateBeep(frequency: number, duration: number, volume: number
   if (typeof window === 'undefined') return '';
   
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
@@ -39,7 +40,7 @@ export function generateBeep(frequency: number, duration: number, volume: number
     oscillator.stop(audioContext.currentTime + duration);
     
     return ''; // Placeholder
-  } catch (err) {
+  } catch {
     return '';
   }
 }
@@ -55,7 +56,7 @@ export function playSound(src: string, volume: number = 1.0) {
       // Fallback: silent fail for now
       console.log('Sound play blocked or failed');
     });
-  } catch (err) {
+  } catch {
     console.log('Audio not supported');
   }
 }
