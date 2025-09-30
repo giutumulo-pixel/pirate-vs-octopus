@@ -1,0 +1,34 @@
+<svg width="256" height="160" viewBox="0 0 256 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8B5A2B"/>
+      <stop offset="100%" stop-color="#5C3A1A"/>
+    </linearGradient>
+    <linearGradient id="sail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fefefe"/>
+      <stop offset="100%" stop-color="#e6e6e6"/>
+    </linearGradient>
+  </defs>
+  <!-- Hull -->
+  <path d="M16 100 L240 100 C230 130 200 150 128 150 C56 150 26 130 16 100 Z" fill="url(#wood)" stroke="#3b240f" stroke-width="3"/>
+  <!-- Deck -->
+  <rect x="60" y="80" width="136" height="10" rx="2" fill="#6d4b2f"/>
+  <!-- Mast -->
+  <rect x="124" y="20" width="4" height="80" fill="#6d4b2f"/>
+  <!-- Sail -->
+  <path d="M128 30 L200 80 L128 80 Z" fill="url(#sail)" stroke="#b9b9b9"/>
+  <path d="M128 30 L56 70 L128 80 Z" fill="url(#sail)" stroke="#b9b9b9"/>
+  <!-- Crow's nest -->
+  <rect x="116" y="20" width="24" height="8" rx="2" fill="#6d4b2f"/>
+  <!-- Jolly Roger flag -->
+  <path d="M128 28 L152 28 L152 16 L128 16 Z" fill="#111"/>
+  <circle cx="140" cy="22" r="4" fill="#fff"/>
+  <rect x="137" y="23.5" width="6" height="2" fill="#111"/>
+  <!-- Portholes -->
+  <circle cx="88" cy="120" r="6" fill="#3a3a3a" stroke="#232323"/>
+  <circle cx="120" cy="122" r="6" fill="#3a3a3a" stroke="#232323"/>
+  <circle cx="152" cy="120" r="6" fill="#3a3a3a" stroke="#232323"/>
+  <!-- Bow details -->
+  <path d="M232 100 C228 120 210 138 180 146" stroke="#4a2f17" stroke-width="3" fill="none"/>
+</svg>
+

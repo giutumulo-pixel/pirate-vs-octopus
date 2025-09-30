@@ -25,6 +25,19 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Make app feel native on mobile */
+  @supports (height: 100dvh) {
+    .mobile-fill {
+      min-height: 100dvh;
+    }
+  }
+
+  @supports not (height: 100dvh) {
+    .mobile-fill {
+      min-height: 100vh;
+    }
+  }
+
   code {
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 6px;

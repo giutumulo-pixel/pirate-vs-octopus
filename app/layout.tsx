@@ -1,27 +1,12 @@
 import type { Metadata } from "next";
 import { Inter, Source_Code_Pro } from "next/font/google";
-import { SafeArea } from "@coinbase/onchainkit/minikit";
-import { minikitConfig } from "../minikit.config";
 import { RootProvider } from "./rootProvider";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: minikitConfig.miniapp.name,
-    description: minikitConfig.miniapp.description,
-    other: {
-      "fc:frame": JSON.stringify({
-        version: minikitConfig.miniapp.version,
-        imageUrl: minikitConfig.miniapp.heroImageUrl,
-        button: {
-          title: `Join the ${minikitConfig.miniapp.name} Waitlist`,
-          action: {
-            name: `Launch ${minikitConfig.miniapp.name}`,
-            type: "launch_frame",
-          },
-        },
-      }),
-    },
+    title: "Pirate vs Octopus",
+    description: "A tiny ocean game scaffold",
   };
 }
 
@@ -43,8 +28,17 @@ export default function RootLayout({
   return (
     <RootProvider>
       <html lang="en">
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+          <link rel="manifest" href="/manifest.json" />
+          <meta name="theme-color" content="#FFD700" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          <meta name="apple-mobile-web-app-title" content="Pirate Fishing" />
+          <link rel="apple-touch-icon" href="/icon.png" />
+        </head>
         <body className={`${inter.variable} ${sourceCodePro.variable}`}>
-          <SafeArea>{children}</SafeArea>
+          {children}
         </body>
       </html>
     </RootProvider>
