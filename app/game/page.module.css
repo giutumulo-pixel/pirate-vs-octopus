@@ -304,7 +304,7 @@
 /* Pause Button */
 .pauseButton {
   position: absolute;
-  top: 65px;
+  top: 50px;
   right: 10px;
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid #FFD700;
@@ -359,11 +359,14 @@
   background: linear-gradient(135deg, #1e3a5f 0%, #0f1b2e 100%);
   border: 3px solid #FFD700;
   border-radius: 20px;
-  padding: 40px 50px;
+  padding: 30px 40px;
   text-align: center;
-  max-width: 500px;
+  max-width: 600px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
   animation: slide-up 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 @keyframes slide-up {
@@ -399,6 +402,27 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 1rem !important;
   font-style: italic;
+}
+
+.pauseShop {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #FFD700;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.pauseSound {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #FFD700;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.pauseSound .soundControls {
+  position: static !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .pauseButtons {
@@ -485,6 +509,40 @@
 .time {
   color: #FF6B6B;
 }
+
+.shopPanel {
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  border: 2px solid #FFD700;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  min-width: 220px;
+}
+
+.shopHeader {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.shopItems { display: grid; gap: 6px; }
+
+.shopButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border: 1px solid #FFD700;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.shopButton:hover { background: rgba(0, 0, 0, 0.8); }
+.price { color: #FFD700; margin-left: 10px; }
 
 .ocean {
   flex: 1;
@@ -1050,6 +1108,22 @@
   /* Enhanced visual effects */
   filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
   transition: filter 0.2s ease;
+}
+
+.fishSprite[data-kind="coin"] {
+  width: 28px;
+  height: 28px;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+}
+
+.fishSprite[data-kind="coin"]::before {
+  content: "🪙";
+  font-size: 24px;
 }
 
 .fishSprite[data-kind="small"] { background-image: url('/fish-small.svg'); }

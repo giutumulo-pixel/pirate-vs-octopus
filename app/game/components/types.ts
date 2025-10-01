@@ -1,6 +1,6 @@
 export type Direction = 1 | -1;
 
-export type FishKind = "small" | "medium" | "large" | "shark" | "monster" | "kraken" | "leviathan";
+export type FishKind = "small" | "medium" | "large" | "shark" | "monster" | "kraken" | "leviathan" | "coin";
 
 export interface LaneConfig {
   id: number;

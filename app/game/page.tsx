@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import styles from "./page.module.css";
 import { useGameEngine } from "./hooks/useGameEngine";
 import { HUD } from "./components/HUD";
+import { Shop } from "./components/Shop";
 import { Controls } from "./components/Controls";
 import { Ocean } from "./components/Ocean";
 import { SoundToggle } from "./components/SoundToggle";
@@ -60,12 +61,6 @@ export default function Game() {
   return (
     <div className={styles.container}>
       <div className={styles.gameArea}>
-        <SoundToggle 
-          isMuted={isMuted}
-          volume={masterVolume}
-          onToggleMute={toggleMute}
-          onVolumeChange={changeVolume}
-        />
         
         {!engine.started ? (
           <>
@@ -151,7 +146,7 @@ export default function Game() {
         </div>
         ) : (
           <>
-            <HUD score={engine.score} timeLeft={engine.timeLeft} level={engine.level} />
+            <HUD score={engine.score} timeLeft={engine.timeLeft} level={engine.level} coins={engine.coins} />
             
             {/* Pause Button */}
             <button 
@@ -167,6 +162,14 @@ export default function Game() {
               <PauseOverlay 
                 onResume={engine.togglePause}
                 onQuit={engine.reset}
+                coins={engine.coins}
+                onBuyRadius={() => engine.purchaseRadius(3, 6)}
+                onBuyTime={() => engine.purchaseTime(2, 10)}
+                onBuySpeed={() => engine.purchaseSpeed(4, 0.1)}
+                isMuted={isMuted}
+                volume={masterVolume}
+                onToggleMute={toggleMute}
+                onVolumeChange={changeVolume}
               />
             )}
             

@@ -55,6 +55,12 @@ export function useGameEngine() {
   const [over, setOver] = useState(false);
   const [paused, setPaused] = useState(false);
   const [score, setScore] = useState(0);
+  const [coinsBalance, setCoinsBalance] = useState(0);
+  // Shop upgrade state
+  const [bonusCatchRadiusPx, setBonusCatchRadiusPx] = useState(0);
+  const [speedMultiplier, setSpeedMultiplier] = useState(1);
+  // Coin spawn cooldown
+  const [lastCoinSpawn, setLastCoinSpawn] = useState(0);
   const [timeLeft, setTimeLeft] = useState(90); // 90 seconds - more time for harder levels
   const [level, setLevel] = useState(1);
   const [levelComplete, setLevelComplete] = useState(false);
@@ -62,6 +68,7 @@ export function useGameEngine() {
 
   const lanes = useMemo(() => generateLanes(), []);
   const [fish, setFish] = useState<FishSprite[]>([]);
+  const [coins, setCoins] = useState<FishSprite[]>([]);
 
   // Load saved progress from localStorage on mount
   useEffect(() => {
@@ -74,8 +81,20 @@ export function useGameEngine() {
           setLevel(maxLevel); // Start from saved level
         }
       }
+      const savedCoins = localStorage.getItem('pirateCoins');
+      if (savedCoins) {
+        const c = parseInt(savedCoins, 10);
+        if (!Number.isNaN(c)) setCoinsBalance(c);
+      }
     }
   }, []);
+
+  // Persist coins balance
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pirateCoins', coinsBalance.toString());
+    }
+  }, [coinsBalance]);
 
   const [indicatorDeg, setIndicatorDeg] = useState(0);
   const indicatorDir = useRef<Direction>(1);
@@ -113,6 +132,29 @@ export function useGameEngine() {
     }
     setFish(initial);
   }, [lanes]);
+
+  // Spawn a golden coin every 30s replacing a random fish in a random lane
+  useEffect(() => {
+    if (!started || over) return;
+    const id = setInterval(() => {
+      setFish(prev => {
+        if (prev.length === 0) return prev;
+        const idx = Math.floor(Math.random() * prev.length);
+        const victim = prev[idx];
+        // Replace with coin sprite in same lane/position
+        const coin: FishSprite = {
+          id: `coin-${Date.now()}`,
+          laneId: victim.laneId,
+          kind: "coin",
+          xPx: victim.xPx,
+        } as FishSprite;
+        const next = prev.slice();
+        next[idx] = coin;
+        return next;
+      });
+    }, 30000);
+    return () => clearInterval(id);
+  }, [started, over]);
 
   // Indicator oscillation
   useEffect(() => {
@@ -225,8 +267,8 @@ export function useGameEngine() {
     setHook(prev => {
       if (!prev) return prev;
       // Slower descent, faster ascent
-      const speedDown = 140; // px/sec
-      const speedUp = 320;
+      const speedDown = 140 * speedMultiplier; // px/sec
+      const speedUp = 320 * speedMultiplier;
       let { xPx, yPx, isCasting, isReturning } = prev;
       if (isCasting) {
         // move along angle downwards
@@ -258,7 +300,22 @@ export function useGameEngine() {
         // Clamp to screen edges during return
         xPx = Math.max(0, Math.min(GAME_WIDTH_PX, newX));
         yPx = Math.max(0, Math.min(GAME_HEIGHT_PX, newY));
-        if (yPx <= 0) return null; // finished
+        if (yPx <= 0) {
+          // Hook returned to surface - add points for caught fish
+          setFish(prevFish => {
+            const caughtFish = prevFish.filter(f => f.isCaught);
+            for (const f of caughtFish) {
+              if (f.kind === "coin") {
+                setCoinsBalance(c => c + 1);
+              } else {
+                const lane = lanes.find(l => l.id === f.laneId)!;
+                setScore(s => s + lane.points);
+              }
+            }
+            return prevFish;
+          });
+          return null; // finished
+        }
       }
       return { ...prev, xPx, yPx, isCasting, isReturning };
     });
@@ -273,7 +330,7 @@ export function useGameEngine() {
       const isPoweredHook = hookNow.usingAnchor;
       
       // Base catch radius - powered hook is more forgiving overall
-      const baseCatchRadius = isPoweredHook ? 65 : 35;
+      const baseCatchRadius = (isPoweredHook ? 65 : 35) + bonusCatchRadiusPx;
       
       // Function to get catch radius based on fish depth (lane)
       // Deeper fish (more points) = smaller radius = harder to catch
@@ -359,9 +416,8 @@ export function useGameEngine() {
         // If found a fish, catch only that one
         if (closestFish) {
           // Only score if this fish hasn't been scored yet
+          // Don't add points here - wait until fish is pulled up
           if (!scoredFishIds.current.has(closestFish.fish.id)) {
-            const lane = lanes.find(l => l.id === closestFish.fish.laneId)!;
-            setScore(s => s + lane.points);
             scoredFishIds.current.add(closestFish.fish.id);
           }
           setHook(h => h ? { ...h, isCasting: false, isReturning: true } : h);
@@ -404,11 +460,10 @@ export function useGameEngine() {
           const dist2 = dx * dx + dy * dy;
           
           if (dist2 < catchRadius * catchRadius) {
-            // Powered hook caught a fish!
+            // Powered hook caught a fish or a coin!
             // Only score if this fish hasn't been scored yet
+            // Don't add points here - wait until fish is pulled up
             if (!scoredFishIds.current.has(f.id)) {
-              const lane = lanes.find(l => l.id === f.laneId)!;
-              setScore(s => s + lane.points);
               scoredFishIds.current.add(f.id);
             }
             
@@ -503,6 +558,9 @@ export function useGameEngine() {
     setStarted(true);
     setBonus({ active: false, spawn: undefined });
     setHook(null);
+    // Reset shop upgrades for new game
+    setBonusCatchRadiusPx(0);
+    setSpeedMultiplier(1);
   }, []);
 
   const startFromLevel = useCallback((targetLevel: number) => {
@@ -514,6 +572,9 @@ export function useGameEngine() {
     setStarted(true);
     setBonus({ active: false, spawn: undefined });
     setHook(null);
+    // Reset shop upgrades for new level
+    setBonusCatchRadiusPx(0);
+    setSpeedMultiplier(1);
   }, []);
 
   const resetProgress = useCallback(() => {
@@ -522,6 +583,31 @@ export function useGameEngine() {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('pirateMaxLevel');
     }
+  }, []);
+
+  // Shop actions
+  const purchaseRadius = useCallback((cost: number, amount: number) => {
+    setCoinsBalance(c => {
+      if (c < cost) return c;
+      setBonusCatchRadiusPx(v => v + amount);
+      return c - cost;
+    });
+  }, []);
+
+  const purchaseTime = useCallback((cost: number, amountSec: number) => {
+    setCoinsBalance(c => {
+      if (c < cost) return c;
+      setTimeLeft(t => t + amountSec);
+      return c - cost;
+    });
+  }, []);
+
+  const purchaseSpeed = useCallback((cost: number, delta: number) => {
+    setCoinsBalance(c => {
+      if (c < cost) return c;
+      setSpeedMultiplier(m => Math.max(0.5, m + delta));
+      return c - cost;
+    });
   }, []);
 
   const nextLevel = useCallback(() => {
@@ -533,6 +619,9 @@ export function useGameEngine() {
     setStarted(true);
     setBonus({ active: false, spawn: undefined });
     setHook(null);
+    // Reset shop upgrades for new level
+    setBonusCatchRadiusPx(0);
+    setSpeedMultiplier(1);
   }, []);
 
   const cast = useCallback(() => {
@@ -573,6 +662,8 @@ export function useGameEngine() {
     setLevelComplete(false);
     setHook(null);
     setBonus({ active: false, spawn: undefined });
+    // keep coins between runs; comment next line if you want to reset
+    // setCoinsBalance(0);
   }, []);
 
   return {
@@ -581,6 +672,7 @@ export function useGameEngine() {
     over,
     paused,
     score,
+    coins: coinsBalance,
     timeLeft,
     level,
     levelComplete,
@@ -599,6 +691,9 @@ export function useGameEngine() {
     reset,
     resetProgress,
     togglePause,
+    purchaseRadius,
+    purchaseTime,
+    purchaseSpeed,
     constants: { GAME_WIDTH_PX, GAME_HEIGHT_PX },
   };
 }
