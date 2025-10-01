@@ -1077,7 +1077,7 @@
   position: absolute;
   left: 50%;
   bottom: 61.67%; /* RESPONSIVE - 370px/600px = 61.67% */
-  transform: translateX(-15%);
+  transform: translateX(-50%);
   width: 80px;
   height: 80px;
   background: url('/pirate.svg') center/contain no-repeat;
