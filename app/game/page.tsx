@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import styles from "./page.module.css";
 import { useGameEngine } from "./hooks/useGameEngine";
 import { HUD } from "./components/HUD";
