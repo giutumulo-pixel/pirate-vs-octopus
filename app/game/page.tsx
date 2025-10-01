@@ -34,6 +34,17 @@ export default function Game() {
     };
     
     const onTouch = (e: TouchEvent) => {
+      // Don't intercept if game not started or on UI elements
+      if (!engine.started || engine.over) return;
+      
+      const target = e.target as HTMLElement;
+      // Ignore touches on buttons and UI
+      if (target.tagName === 'BUTTON' || 
+          target.closest('button') ||
+          target.closest('[class*="hud"]')) {
+        return;
+      }
+      
       e.preventDefault();
       engine.cast();
     };

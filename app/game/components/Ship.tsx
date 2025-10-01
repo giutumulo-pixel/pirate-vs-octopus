@@ -11,7 +11,15 @@ export function Ship({ bonusActive }: ShipProps) {
     <>
       {/* Ship centered at waterline top */}
       <div className={styles.shipContainer}>
-        <Image src={ShipPirate} alt="Pirate Ship" className={styles.shipImg} width={260} height={120} priority />
+        <Image 
+          src={ShipPirate} 
+          alt="Pirate Ship" 
+          className={styles.shipImg} 
+          width={260} 
+          height={120} 
+          priority 
+          style={{ width: 'auto', height: 'auto' }}
+        />
         {/* Golden flag when bonus is active */}
         {bonusActive && <div className={styles.goldenFlag}>⚓</div>}
       </div>
