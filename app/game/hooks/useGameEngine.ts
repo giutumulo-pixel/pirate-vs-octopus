@@ -59,8 +59,8 @@ export function useGameEngine() {
   // Shop upgrade state
   const [bonusCatchRadiusPx, setBonusCatchRadiusPx] = useState(0);
   const [speedMultiplier, setSpeedMultiplier] = useState(1);
-  // Coin spawn cooldown
-  const [lastCoinSpawn, setLastCoinSpawn] = useState(0);
+  // Coin spawn cooldown (unused for now)
+  const [_lastCoinSpawn, _setLastCoinSpawn] = useState(0);
   const [timeLeft, setTimeLeft] = useState(90); // 90 seconds - more time for harder levels
   const [level, setLevel] = useState(1);
   const [levelComplete, setLevelComplete] = useState(false);
@@ -68,7 +68,7 @@ export function useGameEngine() {
 
   const lanes = useMemo(() => generateLanes(), []);
   const [fish, setFish] = useState<FishSprite[]>([]);
-  const [coins, setCoins] = useState<FishSprite[]>([]);
+  const [_coins, _setCoins] = useState<FishSprite[]>([]);
 
   // Load saved progress from localStorage on mount
   useEffect(() => {
@@ -536,7 +536,7 @@ export function useGameEngine() {
     }
     const id = setTimeout(() => setTimeLeft(t => t - 1), 1000);
     return () => clearTimeout(id);
-  }, [started, over, paused, timeLeft, score, level, levelComplete, maxLevelReached]);
+  }, [started, over, paused, timeLeft, score, level, levelComplete, maxLevelReached, bonusCatchRadiusPx, speedMultiplier]);
 
   const start = useCallback(() => {
     // Start from current level (could be saved level)

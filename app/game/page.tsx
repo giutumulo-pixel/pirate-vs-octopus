@@ -3,10 +3,8 @@ import { useEffect } from "react";
 import styles from "./page.module.css";
 import { useGameEngine } from "./hooks/useGameEngine";
 import { HUD } from "./components/HUD";
-import { Shop } from "./components/Shop";
 import { Controls } from "./components/Controls";
 import { Ocean } from "./components/Ocean";
-import { SoundToggle } from "./components/SoundToggle";
 import { PauseOverlay } from "./components/PauseOverlay";
 import { useSoundManager } from "./hooks/useSound";
 
